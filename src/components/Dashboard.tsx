@@ -11,9 +11,10 @@ import {
 } from "@/components/ui/card";
 import { ChartContainer, ChartTooltipContent } from "@/components/ui/chart";
 import { cn } from "@/lib/utils";
+import { Loader2 } from "lucide-react";
 
 const Dashboard: React.FC = () => {
-  const { transactions, totalIncome, totalExpense, balance } = useFinancial();
+  const { transactions, totalIncome, totalExpense, balance, isLoading } = useFinancial();
 
   // Data for income vs expense chart
   const overviewData = [
@@ -70,6 +71,14 @@ const Dashboard: React.FC = () => {
 
   // Color palette for pie chart
   const COLORS = ["#38A169", "#3182CE", "#805AD5", "#D69E2E", "#DD6B20", "#E53E3E", "#F56565", "#ED8936", "#48BB78", "#4299E1"];
+
+  if (isLoading) {
+    return (
+      <div className="h-60 flex items-center justify-center">
+        <Loader2 className="h-10 w-10 animate-spin text-primary" />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8">
