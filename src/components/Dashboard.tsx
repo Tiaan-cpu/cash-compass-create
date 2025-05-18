@@ -68,12 +68,15 @@ const Dashboard: React.FC = () => {
     }).format(amount);
   };
 
+  // Color palette for pie chart
+  const COLORS = ["#38A169", "#3182CE", "#805AD5", "#D69E2E", "#DD6B20", "#E53E3E", "#F56565", "#ED8936", "#48BB78", "#4299E1"];
+
   return (
     <div className="space-y-8">
       {/* Summary Cards */}
       <div className="grid gap-4 md:grid-cols-3">
-        <Card>
-          <CardHeader className="pb-2">
+        <Card className="overflow-hidden border-t-4 border-t-emerald-500 shadow-md hover:shadow-lg transition-shadow">
+          <CardHeader className="pb-2 bg-gradient-to-r from-emerald-50 to-transparent">
             <CardTitle className="text-sm font-medium text-muted-foreground">
               Total Income
             </CardTitle>
@@ -84,8 +87,8 @@ const Dashboard: React.FC = () => {
             </div>
           </CardContent>
         </Card>
-        <Card>
-          <CardHeader className="pb-2">
+        <Card className="overflow-hidden border-t-4 border-t-rose-500 shadow-md hover:shadow-lg transition-shadow">
+          <CardHeader className="pb-2 bg-gradient-to-r from-rose-50 to-transparent">
             <CardTitle className="text-sm font-medium text-muted-foreground">
               Total Expenses
             </CardTitle>
@@ -96,8 +99,14 @@ const Dashboard: React.FC = () => {
             </div>
           </CardContent>
         </Card>
-        <Card>
-          <CardHeader className="pb-2">
+        <Card className={cn(
+          "overflow-hidden border-t-4 shadow-md hover:shadow-lg transition-shadow", 
+          balance >= 0 ? "border-t-emerald-500" : "border-t-rose-500"
+        )}>
+          <CardHeader className={cn(
+            "pb-2 bg-gradient-to-r to-transparent", 
+            balance >= 0 ? "from-emerald-50" : "from-rose-50"
+          )}>
             <CardTitle className="text-sm font-medium text-muted-foreground">
               Balance
             </CardTitle>
@@ -117,7 +126,7 @@ const Dashboard: React.FC = () => {
 
       {/* Charts */}
       <div className="grid gap-4 md:grid-cols-2">
-        <Card>
+        <Card className="shadow-md hover:shadow-lg transition-shadow">
           <CardHeader>
             <CardTitle>Income vs Expenses</CardTitle>
             <CardDescription>
@@ -133,7 +142,7 @@ const Dashboard: React.FC = () => {
                 <ResponsiveContainer width="100%" height="100%">
                   <RechartsBarChart data={overviewData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
                     <Tooltip content={<ChartTooltipContent />} />
-                    <Bar dataKey="value" name="Amount">
+                    <Bar dataKey="value" name="Amount" radius={[4, 4, 0, 0]}>
                       {overviewData.map((entry, index) => (
                         <Cell key={`cell-${index}`} fill={entry.fill} />
                       ))}
@@ -146,7 +155,7 @@ const Dashboard: React.FC = () => {
         </Card>
 
         {transactions.length > 0 ? (
-          <Card>
+          <Card className="shadow-md hover:shadow-lg transition-shadow">
             <CardHeader>
               <CardTitle>Category Breakdown</CardTitle>
               <CardDescription>
@@ -169,7 +178,11 @@ const Dashboard: React.FC = () => {
                         cy="50%"
                         outerRadius={80}
                         label={(entry) => entry.name}
-                      />
+                      >
+                        {categoryData.expenseData.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                        ))}
+                      </Pie>
                     </RechartsPieChart>
                   </ResponsiveContainer>
                 </ChartContainer>
@@ -177,7 +190,7 @@ const Dashboard: React.FC = () => {
             </CardContent>
           </Card>
         ) : (
-          <Card>
+          <Card className="shadow-md hover:shadow-lg transition-shadow bg-gradient-to-br from-gray-50 to-transparent">
             <CardHeader>
               <CardTitle>Category Breakdown</CardTitle>
               <CardDescription>

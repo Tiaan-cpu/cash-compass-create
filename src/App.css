@@ -1,3 +1,4 @@
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -39,4 +40,39 @@
 
 .read-the-docs {
   color: #888;
+}
+
+/* Enhanced styling */
+body {
+  background-color: #f9fafb;
+  background-image: 
+    radial-gradient(at 10% 90%, rgba(56, 161, 105, 0.03) 0px, transparent 50%),
+    radial-gradient(at 90% 10%, rgba(229, 62, 62, 0.03) 0px, transparent 50%);
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+.container {
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Card hover effects */
+.card {
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+/* Dark mode adjustments */
+.dark body {
+  background-image: 
+    radial-gradient(at 10% 90%, rgba(56, 161, 105, 0.05) 0px, transparent 50%),
+    radial-gradient(at 90% 10%, rgba(229, 62, 62, 0.05) 0px, transparent 50%);
 }

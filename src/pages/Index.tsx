@@ -12,29 +12,31 @@ const Index = () => {
 
   return (
     <FinancialProvider>
-      <div className="container py-6">
-        <header className="mb-8">
-          <h1 className="text-4xl font-bold">Income vs Expense Tracker</h1>
-          <p className="text-muted-foreground">
-            Track, analyze, and manage your personal finances
+      <div className="container py-6 animate-in fade-in duration-500">
+        <header className="mb-8 text-center">
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-emerald-600 via-blue-600 to-rose-500 bg-clip-text text-transparent">
+            Income vs Expense Tracker
+          </h1>
+          <p className="text-muted-foreground mt-2 max-w-2xl mx-auto">
+            Track, analyze, and manage your personal finances with our intuitive dashboard
           </p>
         </header>
 
         {isMobile ? (
           // Mobile layout with tabs
           <Tabs defaultValue="dashboard" className="w-full">
-            <TabsList className="grid w-full grid-cols-3">
+            <TabsList className="grid w-full grid-cols-3 mb-6">
               <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
               <TabsTrigger value="add">Add New</TabsTrigger>
               <TabsTrigger value="history">History</TabsTrigger>
             </TabsList>
-            <TabsContent value="dashboard" className="mt-6">
+            <TabsContent value="dashboard" className="mt-6 animate-in fade-in duration-300">
               <Dashboard />
             </TabsContent>
-            <TabsContent value="add" className="mt-6">
+            <TabsContent value="add" className="mt-6 animate-in fade-in duration-300">
               <TransactionForm />
             </TabsContent>
-            <TabsContent value="history" className="mt-6">
+            <TabsContent value="history" className="mt-6 animate-in fade-in duration-300">
               <TransactionList />
             </TabsContent>
           </Tabs>
@@ -44,10 +46,10 @@ const Index = () => {
             <Dashboard />
             
             <div className="grid gap-6 md:grid-cols-2">
-              <div>
+              <div className="animate-in fade-in duration-300" style={{ animationDelay: "100ms" }}>
                 <TransactionForm />
               </div>
-              <div>
+              <div className="animate-in fade-in duration-300" style={{ animationDelay: "200ms" }}>
                 <TransactionList />
               </div>
             </div>
