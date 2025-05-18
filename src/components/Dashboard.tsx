@@ -1,6 +1,6 @@
 
 import React, { useMemo } from "react";
-import { Bar, Pie } from "recharts";
+import { Bar, Pie, BarChart as RechartsBarChart, PieChart as RechartsPieChart, ResponsiveContainer, Cell, Tooltip } from "recharts";
 import { useFinancial } from "@/contexts/FinancialContext";
 import {
   Card,
@@ -9,7 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { BarChart, PieChart } from "@/components/ui/chart";
+import { ChartContainer, ChartTooltipContent } from "@/components/ui/chart";
 import { cn } from "@/lib/utils";
 
 const Dashboard: React.FC = () => {
@@ -79,7 +79,7 @@ const Dashboard: React.FC = () => {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-income">
+            <div className="text-2xl font-bold text-emerald-500">
               {formatCurrency(totalIncome)}
             </div>
           </CardContent>
@@ -91,7 +91,7 @@ const Dashboard: React.FC = () => {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-expense">
+            <div className="text-2xl font-bold text-rose-500">
               {formatCurrency(totalExpense)}
             </div>
           </CardContent>
@@ -106,7 +106,7 @@ const Dashboard: React.FC = () => {
             <div
               className={cn(
                 "text-2xl font-bold",
-                balance >= 0 ? "text-income" : "text-expense"
+                balance >= 0 ? "text-emerald-500" : "text-rose-500"
               )}
             >
               {formatCurrency(balance)}
@@ -125,14 +125,23 @@ const Dashboard: React.FC = () => {
             </CardDescription>
           </CardHeader>
           <CardContent className="pb-4">
-            <BarChart
-              data={overviewData}
-              index="name"
-              categories={["value"]}
-              colors={["emerald", "rose"]}
-              valueFormatter={(value) => formatCurrency(value)}
-              className="h-[300px]"
-            />
+            <div className="h-[300px]">
+              <ChartContainer config={{
+                income: { color: "#38A169" },
+                expense: { color: "#E53E3E" }
+              }}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <RechartsBarChart data={overviewData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+                    <Tooltip content={<ChartTooltipContent />} />
+                    <Bar dataKey="value" name="Amount">
+                      {overviewData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.fill} />
+                      ))}
+                    </Bar>
+                  </RechartsBarChart>
+                </ResponsiveContainer>
+              </ChartContainer>
+            </div>
           </CardContent>
         </Card>
 
@@ -145,13 +154,26 @@ const Dashboard: React.FC = () => {
               </CardDescription>
             </CardHeader>
             <CardContent className="pb-4">
-              <PieChart
-                data={categoryData.expenseData.length > 0 ? categoryData.expenseData : [{ name: "No Data", value: 1, fill: "#ccc" }]}
-                index="name"
-                categories={["value"]}
-                valueFormatter={(value) => formatCurrency(value)}
-                className="h-[300px]"
-              />
+              <div className="h-[300px]">
+                <ChartContainer config={{
+                  expense: { color: "#E53E3E" }
+                }}>
+                  <ResponsiveContainer width="100%" height="100%">
+                    <RechartsPieChart>
+                      <Tooltip content={<ChartTooltipContent />} />
+                      <Pie
+                        data={categoryData.expenseData.length > 0 ? categoryData.expenseData : [{ name: "No Data", value: 1, fill: "#ccc" }]}
+                        dataKey="value"
+                        nameKey="name"
+                        cx="50%"
+                        cy="50%"
+                        outerRadius={80}
+                        label={(entry) => entry.name}
+                      />
+                    </RechartsPieChart>
+                  </ResponsiveContainer>
+                </ChartContainer>
+              </div>
             </CardContent>
           </Card>
         ) : (

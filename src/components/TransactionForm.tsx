@@ -70,7 +70,17 @@ const TransactionForm: React.FC = () => {
   });
 
   const onSubmit = (data: FormData) => {
-    addTransaction(data);
+    // Ensure all required fields are present and handle description correctly
+    const transaction = {
+      type: data.type,
+      amount: data.amount,
+      category: data.category,
+      description: data.description || "", // Ensure description is never undefined
+      date: data.date,
+    };
+    
+    addTransaction(transaction);
+    
     form.reset({
       amount: 0,
       category: "",
@@ -97,10 +107,10 @@ const TransactionForm: React.FC = () => {
               className="w-full"
             >
               <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="income" className="data-[state=active]:bg-income data-[state=active]:text-white">
+                <TabsTrigger value="income" className="data-[state=active]:bg-emerald-500 data-[state=active]:text-white">
                   Income
                 </TabsTrigger>
-                <TabsTrigger value="expense" className="data-[state=active]:bg-expense data-[state=active]:text-white">
+                <TabsTrigger value="expense" className="data-[state=active]:bg-rose-500 data-[state=active]:text-white">
                   Expense
                 </TabsTrigger>
               </TabsList>
@@ -124,9 +134,9 @@ const TransactionForm: React.FC = () => {
                         }}
                         className={cn(
                           "focus:ring-2",
-                          transactionType === "income"
-                            ? "focus:ring-income/50"
-                            : "focus:ring-expense/50"
+                          form.watch("type") === "income"
+                            ? "focus:ring-emerald-500/50"
+                            : "focus:ring-rose-500/50"
                         )}
                       />
                     </FormControl>
@@ -146,16 +156,16 @@ const TransactionForm: React.FC = () => {
                         <SelectTrigger
                           className={cn(
                             "focus:ring-2",
-                            transactionType === "income"
-                              ? "focus:ring-income/50"
-                              : "focus:ring-expense/50"
+                            form.watch("type") === "income"
+                              ? "focus:ring-emerald-500/50"
+                              : "focus:ring-rose-500/50"
                           )}
                         >
                           <SelectValue placeholder="Select category" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {categories.map((category) => (
+                        {(form.watch("type") === "income" ? incomeCategories : expenseCategories).map((category) => (
                           <SelectItem key={category} value={category}>
                             {category}
                           </SelectItem>
@@ -180,9 +190,9 @@ const TransactionForm: React.FC = () => {
                       {...field}
                       className={cn(
                         "focus:ring-2",
-                        transactionType === "income"
-                          ? "focus:ring-income/50"
-                          : "focus:ring-expense/50"
+                        form.watch("type") === "income"
+                          ? "focus:ring-emerald-500/50"
+                          : "focus:ring-rose-500/50"
                       )}
                     />
                   </FormControl>
@@ -206,9 +216,9 @@ const TransactionForm: React.FC = () => {
                             "pl-3 text-left font-normal",
                             !field.value && "text-muted-foreground",
                             "focus:ring-2",
-                            transactionType === "income"
-                              ? "focus:ring-income/50"
-                              : "focus:ring-expense/50"
+                            form.watch("type") === "income"
+                              ? "focus:ring-emerald-500/50"
+                              : "focus:ring-rose-500/50"
                           )}
                         >
                           {field.value ? (
@@ -241,10 +251,10 @@ const TransactionForm: React.FC = () => {
               type="submit" 
               className={cn(
                 "w-full",
-                transactionType === "income" ? "bg-income hover:bg-income/90" : "bg-expense hover:bg-expense/90"
+                form.watch("type") === "income" ? "bg-emerald-500 hover:bg-emerald-600" : "bg-rose-500 hover:bg-rose-600"
               )}
             >
-              Add {transactionType === "income" ? "Income" : "Expense"}
+              Add {form.watch("type") === "income" ? "Income" : "Expense"}
             </Button>
           </form>
         </Form>
