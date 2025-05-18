@@ -13,15 +13,6 @@ const Index = () => {
   return (
     <FinancialProvider>
       <div className="container py-6 animate-in fade-in duration-500">
-        <header className="mb-8 text-center">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-emerald-600 via-blue-600 to-rose-500 bg-clip-text text-transparent">
-            Income vs Expense Tracker
-          </h1>
-          <p className="text-muted-foreground mt-2 max-w-2xl mx-auto">
-            Track, analyze, and manage your personal finances with our intuitive dashboard
-          </p>
-        </header>
-
         {isMobile ? (
           // Mobile layout with tabs
           <Tabs defaultValue="dashboard" className="w-full">
